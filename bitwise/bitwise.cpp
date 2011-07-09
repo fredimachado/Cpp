@@ -21,12 +21,22 @@ int main()
     printGroupPermissions();
 
     // create a new user, set the name and group
-    User user;
-    user.SetName("Fredi");
-    user.SetGroup(USER_EDITOR);
+    User editor;
+    editor.SetName("Fredi");
+    editor.SetGroup(USER_EDITOR);
+
+    // create a new user and set it as publisher
+    User publisher;
+    publisher.SetName("Mariana");
+    publisher.SetGroup(USER_PUBLISHER);
 
     // print what Fredi can and cannot do
-    printUserPermissions(&user);
+    printUserPermissions(&editor);
+
+    printf("\n");
+
+    // print what Mariana can and cannot do
+    printUserPermissions(&publisher);
 
     return 0;
 }
