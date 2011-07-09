@@ -30,6 +30,11 @@ int main()
     publisher.SetName("Mariana");
     publisher.SetGroup(USER_PUBLISHER);
 
+    // create a new user and set it as admin
+    User admin;
+    admin.SetName("Isabella");
+    admin.SetGroup(USER_ADMIN);
+
     // print what Fredi can and cannot do
     printUserPermissions(&editor);
 
@@ -37,6 +42,11 @@ int main()
 
     // print what Mariana can and cannot do
     printUserPermissions(&publisher);
+
+    printf("\n");
+
+    // print what Isabella can do
+    printUserPermissions(&admin);
 
     return 0;
 }
