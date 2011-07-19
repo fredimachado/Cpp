@@ -172,7 +172,7 @@ MeleeHitOutcome Unit::RollMeleeOutcomeAgainst(const Unit* victim, int32 crit_cha
 
     if (tmp > 0 && roll < (sum += tmp))
     {
-        printf("RollMeleeOutcomeAgainst: MISS  roll(%d) <%d, %d\n", roll, sum - tmp, sum);
+        printf("RollMeleeOutcomeAgainst: MISS - roll %d between %d, %d\n", roll, sum - tmp, sum);
         return MELEE_HIT_MISS;
     }
 
@@ -180,11 +180,11 @@ MeleeHitOutcome Unit::RollMeleeOutcomeAgainst(const Unit* victim, int32 crit_cha
 
     if (tmp > 0 && roll < (sum += tmp))
     {
-        printf("RollMeleeOutcomeAgainst: CRIT roll(%d) <%d, %d\n", roll, sum - tmp, sum);
+        printf("RollMeleeOutcomeAgainst: CRITICAL - roll %d between %d, %d\n", roll, sum - tmp, sum);
         return MELEE_HIT_CRIT;
     }
 
-    printf("RollMeleeOutcomeAgainst: NORMAL roll(%d)\n", roll);
+    printf("RollMeleeOutcomeAgainst: NORMAL - roll %d greater than %d\n", roll, sum);
     return MELEE_HIT_NORMAL;
 }
 
