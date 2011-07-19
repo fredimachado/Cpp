@@ -24,7 +24,7 @@ int main()
     Creature* mob1 = new Creature();
     mob1->SetMaxHealth(30);
     mob1->SetHealth(30);
-    mob1->SetDamage(2.0f, 4.0f);
+    mob1->SetDamage(1.0f, 4.0f);
 
     while (player1->IsAlive() && mob1->IsAlive())
     {
