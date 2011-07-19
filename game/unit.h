@@ -94,13 +94,13 @@ class Unit : public Object
     protected:
         explicit Unit();
 
-        float m_mindamage, m_maxdamage;
-
         DeathState m_deathState;
 
     private:
         uint8 m_level, m_race, m_class, m_gender;
         uint32 m_health, m_maxhealth;
+
+        float m_mindamage, m_maxdamage;
 };
 
 #endif
