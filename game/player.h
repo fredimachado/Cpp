@@ -18,8 +18,6 @@ class Player : public Unit
 {
     public:
         explicit Player();
-
-        void CalculateMinMaxDamage(float& min_damage, float& max_damage);
 };
 
 #endif

@@ -192,13 +192,8 @@ uint32 Unit::CalculateDamage()
 {
     float min_damage, max_damage;
 
-    if (GetTypeId() == TYPEID_PLAYER)
-        ToPlayer()->CalculateMinMaxDamage(min_damage, max_damage);
-    else
-    {
-        min_damage = m_mindamage;
-        max_damage = m_maxdamage;
-    }
+    min_damage = m_mindamage;
+    max_damage = m_maxdamage;
 
     if (min_damage > max_damage)
         std::swap(min_damage, max_damage);
