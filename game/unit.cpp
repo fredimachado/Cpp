@@ -99,9 +99,7 @@ void Unit::CalculateMeleeDamage(Unit* victim, uint32 damage, CalcDamageInfo* dam
     damageInfo->attacker    = this;
     damageInfo->target      = victim;
     damageInfo->damage      = 0;
-    damageInfo->TargetState = 0;
-    damageInfo->HitInfo     = 0;
-    damageInfo->hitOutCome  = MELEE_HIT_MISS;
+    damageInfo->hitType  = HIT_MISS;
 
     if (!victim)
         return;
@@ -112,23 +110,17 @@ void Unit::CalculateMeleeDamage(Unit* victim, uint32 damage, CalcDamageInfo* dam
     damage += CalculateDamage();
     damageInfo->damage = damage;
 
-    damageInfo->hitOutCome = RollMeleeOutcomeAgainst(damageInfo->target);
+    damageInfo->hitType = RollHitType(damageInfo->target);
 
-    switch (damageInfo->hitOutCome)
+    switch (damageInfo->hitType)
     {
-        case MELEE_HIT_MISS:
-            damageInfo->HitInfo |= HITINFO_MISS;
-            damageInfo->TargetState = VICTIMSTATE_INTACT;
+        case HIT_MISS:
             damageInfo->damage = 0;
             break;
-        case MELEE_HIT_NORMAL:
-            damageInfo->TargetState = VICTIMSTATE_HIT;
-            break;
-        case MELEE_HIT_CRIT:
-            damageInfo->HitInfo     |= HITINFO_CRITICALHIT;
-            damageInfo->TargetState  = VICTIMSTATE_HIT;
+        case HIT_CRITICAL:
             damageInfo->damage += damageInfo->damage;
             break;
+        case HIT_NORMAL:
         default:
             break;
     }
@@ -155,15 +147,15 @@ void Unit::AttackerStateUpdate(Unit* victim)
     DealMeleeDamage(&damageInfo);
 }
 
-MeleeHitOutcome Unit::RollMeleeOutcomeAgainst(const Unit* victim) const
+HitType Unit::RollHitType(const Unit* victim) const
 {
     float miss_chance = 0.1f;
     float crit_chance = 0.25f;
 
-    return RollMeleeOutcomeAgainst(victim, int32(crit_chance * 100), int32(miss_chance * 100));
+    return RollHitType(victim, int32(crit_chance * 100), int32(miss_chance * 100));
 }
 
-MeleeHitOutcome Unit::RollMeleeOutcomeAgainst(const Unit* victim, int32 crit_chance, int32 miss_chance) const
+HitType Unit::RollHitType(const Unit* victim, int32 crit_chance, int32 miss_chance) const
 {
     int32 sum = 0, tmp = 0;
     int32 roll = urand(0, 100);
@@ -172,20 +164,20 @@ MeleeHitOutcome Unit::RollMeleeOutcomeAgainst(const Unit* victim, int32 crit_cha
 
     if (tmp > 0 && roll < (sum += tmp))
     {
-        printf("RollMeleeOutcomeAgainst: MISS - roll %d between %d, %d\n", roll, sum - tmp, sum);
-        return MELEE_HIT_MISS;
+        printf("RollHitType: MISS - roll %d between %d, %d\n", roll, sum - tmp, sum);
+        return HIT_MISS;
     }
 
     tmp = crit_chance;
 
     if (tmp > 0 && roll < (sum += tmp))
     {
-        printf("RollMeleeOutcomeAgainst: CRITICAL - roll %d between %d, %d\n", roll, sum - tmp, sum);
-        return MELEE_HIT_CRIT;
+        printf("RollHitType: CRITICAL - roll %d between %d, %d\n", roll, sum - tmp, sum);
+        return HIT_CRITICAL;
     }
 
-    printf("RollMeleeOutcomeAgainst: NORMAL - roll %d greater than %d\n", roll, sum);
-    return MELEE_HIT_NORMAL;
+    printf("RollHitType: NORMAL - roll %d greater than %d\n", roll, sum);
+    return HIT_NORMAL;
 }
 
 uint32 Unit::CalculateDamage()

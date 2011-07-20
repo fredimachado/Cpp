@@ -22,23 +22,11 @@ enum DeathState
     DEAD        = 3
 };
 
-enum MeleeHitOutcome
+enum HitType
 {
-    MELEE_HIT_MISS,
-    MELEE_HIT_CRIT,
-    MELEE_HIT_NORMAL
-};
-
-enum VictimState
-{
-    VICTIMSTATE_INTACT      = 0,
-    VICTIMSTATE_HIT         = 1
-};
-
-enum HitInfo
-{
-    HITINFO_MISS            = 0x00000010,
-    HITINFO_CRITICALHIT     = 0x00000200
+    HIT_MISS,
+    HIT_CRITICAL,
+    HIT_NORMAL
 };
 
 class Unit;
@@ -48,9 +36,7 @@ struct CalcDamageInfo
     Unit*  attacker;
     Unit*  target;
     uint32 damage;
-    uint32 HitInfo;
-    uint32 TargetState;
-    MeleeHitOutcome hitOutCome;
+    HitType hitType;
 };
 
 class Unit : public Object
@@ -72,8 +58,6 @@ class Unit : public Object
 
         void SetDamage(float min_damage, float max_damage) { m_mindamage = min_damage; m_maxdamage = max_damage; }
 
-        void CombatStop();
-
         void Kill(Unit* victim);
 
         bool IsAlive() const { return m_deathState == ALIVE; };
@@ -88,8 +72,8 @@ class Unit : public Object
 
         uint32 CalculateDamage();
 
-        MeleeHitOutcome RollMeleeOutcomeAgainst(const Unit* victim) const;
-        MeleeHitOutcome RollMeleeOutcomeAgainst(const Unit* victim, int32 crit_chance, int32 miss_chance) const;
+        HitType RollHitType(const Unit* victim) const;
+        HitType RollHitType(const Unit* victim, int32 crit_chance, int32 miss_chance) const;
 
     protected:
         explicit Unit();
