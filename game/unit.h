@@ -39,6 +39,18 @@ struct CalcDamageInfo
     HitType hitType;
 };
 
+struct SpellNonMeleeDamage
+{
+    SpellNonMeleeDamage(Unit *_attacker, Unit *_target, uint32 _SpellID)
+        : target(_target), attacker(_attacker), SpellID(_SpellID), damage(0)
+    {}
+
+    Unit*  target;
+    Unit*  attacker;
+    uint32 SpellID;
+    uint32 damage;
+};
+
 class Unit : public Object
 {
     public:
@@ -69,6 +81,14 @@ class Unit : public Object
 
         void CalculateMeleeDamage(Unit* victim, uint32 damage, CalcDamageInfo* damageInfo);
         void DealMeleeDamage(CalcDamageInfo* damageInfo);
+
+        int32 CalculateSpellDamage(SpellEntry const* spellProto, uint8 effect_index) const;
+        void DealSpellDamage(SpellNonMeleeDamage* damageInfo);
+
+        int32 HealBySpell(Unit* victim, SpellEntry const* spellInfo, uint32 addHealth);
+        int32 DealHeal(Unit *pVictim, uint32 addhealth);
+
+        void CastSpell(Unit* victim, SpellEntry const* spellInfo);
 
         uint32 CalculateDamage();
 

@@ -11,12 +11,14 @@
 
 #include "unit.h"
 #include "player.h"
+#include "spell.h"
 #include "util.h"
 
 Unit::Unit() : Object()
 {
     m_objectTypeId = TYPEID_UNIT;
     m_deathState = ALIVE;
+    m_level = 1;
 }
 
 void Unit::SetLevel(uint8 lvl)
@@ -210,4 +212,46 @@ void Unit::SetDeathState(DeathState state)
 
     if (state == JUST_DIED)
         SetHealth(0);
+}
+
+int32 Unit::HealBySpell(Unit* victim, SpellEntry const* spellInfo, uint32 addHealth)
+{
+    int32 gain = DealHeal(victim, addHealth);
+
+    return gain;
+}
+
+int32 Unit::DealHeal(Unit* victim, uint32 addhealth)
+{
+    int32 gain = 0;
+
+    if (addhealth)
+        gain = victim->ModifyHealth(int32(addhealth));
+
+    return gain;
+}
+
+void Unit::CastSpell(Unit* victim, SpellEntry const* spellInfo)
+{
+    Spell* spell = new Spell(this, spellInfo);
+
+    spell->prepare(victim);
+}
+
+int32 Unit::CalculateSpellDamage(SpellEntry const* spellProto, uint8 effect_index) const
+{
+    return Spell::CalculateSpellEffectAmount(spellProto, effect_index, this);
+}
+
+void Unit::DealSpellDamage(SpellNonMeleeDamage* damageInfo)
+{
+    if (damageInfo == 0)
+        return;
+
+    Unit* victim = damageInfo->target;
+
+    if (!victim || !victim->IsAlive())
+        return;
+
+    DealDamage(victim, damageInfo->damage);
 }
