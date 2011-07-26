@@ -48,17 +48,17 @@ void Unit::SetMaxHealth(uint32 val)
         SetHealth(val);
 }
 
-int32 Unit::ModifyHealth(int32 dVal)
+int32 Unit::ModifyHealth(int32 val)
 {
     int32 gain = 0;
 
-    if (dVal == 0)
+    if (val == 0)
         return 0;
 
     int32 curHealth = (int32)GetHealth();
 
-    int32 val = dVal + curHealth;
-    if (val <= 0)
+    int32 newHealth = val + curHealth;
+    if (newHealth <= 0)
     {
         SetHealth(0);
         return -curHealth;
@@ -66,10 +66,10 @@ int32 Unit::ModifyHealth(int32 dVal)
 
     int32 maxHealth = (int32)GetMaxHealth();
 
-    if (val < maxHealth)
+    if (newHealth < maxHealth)
     {
-        SetHealth(val);
-        gain = val - curHealth;
+        SetHealth(newHealth);
+        gain = newHealth - curHealth;
     }
     else if (curHealth != maxHealth)
     {
