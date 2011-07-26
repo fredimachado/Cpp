@@ -38,21 +38,29 @@ int main()
 
     while (player1->IsAlive() && mob1->IsAlive())
     {
-        printf("Player's turn:\n");
+        printf("******************************\n");
+        printf("** Player's turn: ************\n\n");
         player1->AttackerStateUpdate(mob1);
 
         if (urand(0, 1) == 0) // 50% chance to cast spell on creature (just for testing)
             player1->CastSpell(mob1, spell1);
 
+        printf("** End Player's turn: ********\n");
+        printf("******************************\n\n");
+
         getch();
 
         if (mob1->IsAlive())
         {
-            printf("Creature's turn:\n");
+            printf("******************************\n");
+            printf("** Creature's turn: **********\n\n");
             mob1->AttackerStateUpdate(player1);
 
             if (urand(0, 1) == 0) // 50% chance to cast spell on player (just for testing)
                 mob1->CastSpell(player1, spell1);
+
+            printf("** End Creature's turn: ******\n");
+            printf("******************************\n\n");
 
             getch();
         }
