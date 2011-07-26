@@ -23,6 +23,7 @@ enum TypeID
 };
 
 class Player;
+class Creature;
 class Unit;
 
 class Object
@@ -32,6 +33,12 @@ class Object
 
         Player* ToPlayer() { if (GetTypeId() == TYPEID_PLAYER) return reinterpret_cast<Player*>(this); else return NULL; }
         const Player* ToPlayer() const { if (GetTypeId() == TYPEID_PLAYER) return (const Player*)((Player*)this); else return NULL; }
+
+        Creature* ToCreature() { if (GetTypeId() == TYPEID_UNIT) return reinterpret_cast<Creature*>(this); else return NULL; }
+        const Creature* ToCreature() const { if (GetTypeId() == TYPEID_UNIT) return (const Creature*)((Creature*)this); else return NULL; }
+
+        Unit* ToUnit() { if (GetTypeId() == TYPEID_UNIT || GetTypeId() == TYPEID_PLAYER) return reinterpret_cast<Unit*>(this); else return NULL; }
+        const Unit* ToUnit() const { if (GetTypeId() == TYPEID_UNIT || GetTypeId() == TYPEID_PLAYER) return (const Unit*)((Unit*)this); else return NULL; }
 
     protected:
         Object();
