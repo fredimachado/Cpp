@@ -221,12 +221,12 @@ int32 Unit::HealBySpell(Unit* victim, SpellEntry const* spellInfo, uint32 addHea
     return gain;
 }
 
-int32 Unit::DealHeal(Unit* victim, uint32 addhealth)
+int32 Unit::DealHeal(Unit* victim, uint32 addHealth)
 {
     int32 gain = 0;
 
-    if (addhealth)
-        gain = victim->ModifyHealth(int32(addhealth));
+    if (addHealth)
+        gain = victim->ModifyHealth(int32(addHealth));
 
     return gain;
 }

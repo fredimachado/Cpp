@@ -86,7 +86,7 @@ class Unit : public Object
         void DealSpellDamage(SpellNonMeleeDamage* damageInfo);
 
         int32 HealBySpell(Unit* victim, SpellEntry const* spellInfo, uint32 addHealth);
-        int32 DealHeal(Unit *pVictim, uint32 addhealth);
+        int32 DealHeal(Unit* victim, uint32 addHealth);
 
         void CastSpell(Unit* victim, SpellEntry const* spellInfo);
 
