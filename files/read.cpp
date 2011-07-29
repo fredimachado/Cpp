@@ -29,6 +29,7 @@ int main()
     if (player.GetName() != "")
     {
         std::cout << "Name: " << player.GetName() << std::endl
+            << "Level: " << player.GetLevel() << std::endl
             << "HP: " << player.GetHP() << std::endl
             << "Mana: " << player.GetMana() << std::endl
             << "AP: " << player.GetAP() << std::endl

@@ -23,7 +23,28 @@ int main()
         exit(1);
     }
 
-    Player player("Thunt", 20, 10, 1, 1);
+    std::string name;
+    int level, hp, mana, ap, sp;
+
+    std::cout << "Enter name: ";
+    std::getline(std::cin, name);
+
+    std::cout << "Enter level: ";
+    std::cin >> level;
+
+    std::cout << "Enter HP: ";
+    std::cin >> hp;
+
+    std::cout << "Enter Mana: ";
+    std::cin >> mana;
+
+    std::cout << "Enter Attack Power: ";
+    std::cin >> ap;
+
+    std::cout << "Enter Spell Power: ";
+    std::cin >> sp;
+
+    Player player(name, level, hp, mana, ap, sp);
 
     outPlayer.write(reinterpret_cast<const char*>(&player), sizeof(Player));
 
