@@ -9,9 +9,10 @@
 #include <string.h>
 #include "player.h"
 
-Player::Player(std::string name, int hp, int mana, int ap, int sp)
+Player::Player(std::string name, int level, int hp, int mana, int ap, int sp)
 {
     SetName(name);
+    SetLevel(level);
     SetHP(hp);
     SetMana(mana);
     SetAP(ap);

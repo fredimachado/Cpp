@@ -19,10 +19,13 @@ struct Stats
 class Player
 {
     public:
-        Player(std::string = "", int = 0, int = 0, int = 0, int = 0);
+        Player(std::string = "", int = 1, int = 0, int = 0, int = 0, int = 0);
 
         void SetName(std::string);
         const char* GetName() const { return _name; }
+
+        void SetLevel(int level) { _level = level; }
+        int GetLevel() { return _level; }
 
         void SetHP(int hp) { _stats.hp = hp; }
         void SetMana(int mana) { _stats.mana = mana; }
@@ -36,5 +39,6 @@ class Player
 
     private:
         char _name[20];
+        int _level;
         Stats _stats;
 };
