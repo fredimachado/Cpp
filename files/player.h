@@ -25,7 +25,7 @@ class Player
         const char* GetName() const { return _name; }
 
         void SetLevel(int level) { _level = level; }
-        int GetLevel() { return _level; }
+        const int GetLevel() const { return _level; }
 
         void SetHP(int hp) { _stats.hp = hp; }
         void SetMana(int mana) { _stats.mana = mana; }
