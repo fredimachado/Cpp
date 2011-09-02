@@ -66,5 +66,8 @@ int main()
         }
     }
 
+    delete player1;
+    delete mob1;
+
     return 0;
 }

@@ -80,4 +80,7 @@ int main()
     // will fail because B knows nothing about C
     B newB2;
     Globaltest(newB2);
+
+    delete newC;
+    delete newB;
 }

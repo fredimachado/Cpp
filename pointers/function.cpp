@@ -53,5 +53,7 @@ int main()
     printf("MyMath::Multiply: %d\n", (instance->*MathFunctions[FUNC_MULTIPLY])(2, 2));
     printf("MyMath::Divide: %d\n", (instance->*MathFunctions[FUNC_DIVIDE])(4, 2));
 
+    delete instance;
+
     return 0;
 }

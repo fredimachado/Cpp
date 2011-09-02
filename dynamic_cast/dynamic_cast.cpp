@@ -51,5 +51,7 @@ int main()
     else
         printf("Bad casting\n");
 
+    delete subBase;
+
     return 0;
 }
