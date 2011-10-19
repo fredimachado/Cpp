@@ -13,6 +13,7 @@
 #define _UNIT_H
 
 #include "object.h"
+#include "datastores.h"
 
 enum DeathState
 {
@@ -88,7 +89,7 @@ class Unit : public Object
         int32 HealBySpell(Unit* victim, SpellEntry const* spellInfo, uint32 addHealth);
         int32 DealHeal(Unit* victim, uint32 addHealth);
 
-        void CastSpell(Unit* victim, SpellEntry const* spellInfo);
+        void CastSpell(Unit* victim, uint32 spellId);
 
         uint32 CalculateDamage();
 

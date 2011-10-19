@@ -231,8 +231,16 @@ int32 Unit::DealHeal(Unit* victim, uint32 addHealth)
     return gain;
 }
 
-void Unit::CastSpell(Unit* victim, SpellEntry const* spellInfo)
+void Unit::CastSpell(Unit* victim, uint32 spellId)
 {
+    SpellEntry const* spellInfo = sSpellStore.LookupEntry(spellId);
+
+    if (!spellInfo)
+    {
+        printf("CastSpell: unknown spell id %i by caster: %s\n", spellId, (GetTypeId() == TYPEID_PLAYER ? "player" : "creature"));
+        return;
+    }
+
     Spell* spell = new Spell(this, spellInfo);
 
     spell->prepare(victim);

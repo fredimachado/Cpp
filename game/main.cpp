@@ -12,17 +12,13 @@
 #include "creature.h"
 #include "player.h"
 #include "util.h"
+#include "datastores.h"
 
 #include <conio.h>
 
 int main()
 {
-    // Damage spell
-    SpellEntry* spell1 = new SpellEntry();
-    spell1->Id = 1;
-    spell1->Effect[EFFECT_0] = SPELL_EFFECT_DAMAGE;
-    spell1->EffectRealPointsPerLevel[EFFECT_0] = 2;
-    spell1->EffectBasePoints[EFFECT_0] = 1;
+    LoadDataStores("data/");
 
     // player
     Player* player1 = new Player();
@@ -43,7 +39,7 @@ int main()
         player1->AttackerStateUpdate(mob1);
 
         if (urand(0, 1) == 0) // 50% chance to cast spell on creature (just for testing)
-            player1->CastSpell(mob1, spell1);
+            player1->CastSpell(mob1, urand(1, 2));
 
         printf("** End Player's turn: ********\n");
         printf("******************************\n\n");
@@ -57,7 +53,7 @@ int main()
             mob1->AttackerStateUpdate(player1);
 
             if (urand(0, 1) == 0) // 50% chance to cast spell on player (just for testing)
-                mob1->CastSpell(player1, spell1);
+                mob1->CastSpell(player1, urand(1, 2));
 
             printf("** End Creature's turn: ******\n");
             printf("******************************\n\n");
