@@ -13,14 +13,12 @@
 #define _DATASTORES_H
 
 #include "common.h"
-#include <list>
 #include <string>
 #include <cstring>
 #include <cassert>
 
 enum
 {
-    FT_STRING = 's',                                        // char*
     FT_FLOAT  = 'f',                                        // float
     FT_INT    = 'i',                                        // uint32
     FT_IND    = 'n'                                         // the same, but parsed to data
