@@ -28,13 +28,11 @@ int main()
     uint32 recordCount = 3;
     uint32 fieldCount = 10;
     uint32 recordSize = fieldCount * 4;
-    uint32 stringSize = 1;
 
     outSpells.write(reinterpret_cast<char*>(&header), sizeof(uint32));
     outSpells.write(reinterpret_cast<char*>(&recordCount), sizeof(uint32));
     outSpells.write(reinterpret_cast<char*>(&fieldCount), sizeof(uint32));
     outSpells.write(reinterpret_cast<char*>(&recordSize), sizeof(uint32));
-    outSpells.write(reinterpret_cast<char*>(&stringSize), sizeof(uint32));
 
     // Damage spell
     SpellEntry spell1;
@@ -78,8 +76,6 @@ int main()
     outSpells.write(reinterpret_cast<char*>(&spell1), sizeof(SpellEntry));
     outSpells.write(reinterpret_cast<char*>(&spell2), sizeof(SpellEntry));
     outSpells.write(reinterpret_cast<char*>(&spell3), sizeof(SpellEntry));
-
-    outSpells << char(0);
 
     outSpells.close();
 

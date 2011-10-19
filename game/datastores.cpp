@@ -90,24 +90,17 @@ bool DataFileLoader::Load(const char* fileName, char const* fmt)
         return false;
     }
 
-    if (fread(&stringSize, 4, 1, f) != 1)                    // String size
-    {
-        fclose(f);
-        return false;
-    }
-
     fieldsOffset = new uint32[fieldCount];
     fieldsOffset[0] = 0;
     for (uint32 i = 1; i < fieldCount; ++i)
     {
         fieldsOffset[i] = fieldsOffset[i - 1];
-        fieldsOffset[i] += sizeof(uint32);                   // 4 byte fields (int32/float/strings)
+        fieldsOffset[i] += sizeof(uint32);                   // 4 byte fields (int32/float)
     }
 
-    data = new unsigned char[recordSize * recordCount + stringSize];
-    stringTable = data + recordSize * recordCount;
+    data = new unsigned char[recordSize * recordCount];
 
-    if (fread(data, recordSize * recordCount + stringSize, 1, f) != 1)
+    if (fread(data, recordSize * recordCount, 1, f) != 1)
     {
         fclose(f);
         return false;
@@ -146,9 +139,6 @@ uint32 DataFileLoader::GetFormatRecordSize(const char* format, int32* index_pos)
                 break;
             case FT_INT:
                 recordsize += sizeof(uint32);
-                break;
-            case FT_STRING:
-                recordsize += sizeof(char*);
                 break;
             case FT_IND:
                 i = x;
@@ -222,10 +212,6 @@ char* DataFileLoader::AutoProduceData(char const* format, uint32& records, char*
                     *((uint32*)(&dataTable[offset])) = getRecord(y).getUInt(x);
                     offset += sizeof(uint32);
                     break;
-                case FT_STRING:
-                    *((char**)(&dataTable[offset])) = NULL;   // will replace non-empty or "" strings in AutoProduceStrings
-                    offset += sizeof(char*);
-                    break;
                 default:
                     assert(false && "Unknown field format character in fmt");
                     break;
@@ -234,49 +220,4 @@ char* DataFileLoader::AutoProduceData(char const* format, uint32& records, char*
     }
 
     return dataTable;
-}
-
-char* DataFileLoader::AutoProduceStrings(char const* format, char* dataTable)
-{
-    if (strlen(format) != fieldCount)
-        return NULL;
-
-    char* stringPool = new char[stringSize];
-    memcpy(stringPool, stringTable, stringSize);
-
-    uint32 offset = 0;
-
-    for (uint32 y = 0; y < recordCount; ++y)
-    {
-        for (uint32 x = 0; x < fieldCount; ++x)
-        {
-            switch (format[x])
-            {
-                case FT_FLOAT:
-                    offset += sizeof(float);
-                    break;
-                case FT_IND:
-                case FT_INT:
-                    offset += sizeof(uint32);
-                    break;
-                case FT_STRING:
-                {
-                    // fill only not filled entries
-                    char** slot = (char**)(&dataTable[offset]);
-                    if (!*slot || !**slot)
-                    {
-                        const char * st = getRecord(y).getString(x);
-                        *slot=stringPool+(st-(const char*)stringTable);
-                    }
-                    offset += sizeof(char*);
-                    break;
-                 }
-                 default:
-                     assert(false && "Unknown field format character in fmt");
-                     break;
-            }
-        }
-    }
-
-    return stringPool;
 }

@@ -52,14 +52,6 @@ class DataFileLoader
                     return val;
                 }
 
-                char const* getString(size_t field) const
-                {
-                    assert(field < file.fieldCount);
-                    size_t stringOffset = getUInt(field);
-                    assert(stringOffset < file.stringSize);
-                    return reinterpret_cast<char*>(file.stringTable + stringOffset);
-                }
-
             private:
                 Record(DataFileLoader& file_, unsigned char* offset_): offset(offset_), file(file_) {}
                 unsigned char* offset;
@@ -79,23 +71,19 @@ class DataFileLoader
         uint32 GetOffset(size_t id) const { return (fieldsOffset != NULL && id < fieldCount) ? fieldsOffset[id] : 0; }
         bool IsLoaded() const { return data != NULL; }
         char* AutoProduceData(char const* fmt, uint32& count, char**& indexTable);
-        char* AutoProduceStrings(char const* fmt, char* dataTable);
         static uint32 GetFormatRecordSize(char const* format, int32* index_pos = NULL);
     private:
 
         uint32 recordSize;
         uint32 recordCount;
         uint32 fieldCount;
-        uint32 stringSize;
         uint32* fieldsOffset;
         unsigned char* data;
-        unsigned char* stringTable;
 };
 
 template<class T>
 class DataStorage
 {
-    typedef std::list<char*> StringPoolList;
     public:
         explicit DataStorage(const char *f) :
             fmt(f), nCount(0), fieldCount(0), dataTable(NULL)
@@ -121,25 +109,8 @@ class DataStorage
 
             fieldCount = data.GetCols();
             dataTable = (T*)data.AutoProduceData(fmt, nCount, indexTable.asChar);
-            stringPoolList.push_back(data.AutoProduceStrings(fmt, (char*)dataTable));
 
             return indexTable.asT != NULL;
-        }
-
-        bool LoadStringsFrom(char const* fn)
-        {
-            // data must be already loaded using Load
-            if (!indexTable.asT)
-                return false;
-
-            DataFileLoader data;
-            // Check if load was successful, only then continue
-            if (!data.Load(fn, fmt))
-                return false;
-
-            stringPoolList.push_back(data.AutoProduceStrings(fmt, (char*)dataTable));
-
-            return true;
         }
 
         void Clear()
@@ -152,11 +123,6 @@ class DataStorage
             delete[] ((char*)dataTable);
             dataTable = NULL;
 
-            while (!stringPoolList.empty())
-            {
-                delete[] stringPoolList.front();
-                stringPoolList.pop_front();
-            }
             nCount = 0;
         }
 
@@ -172,7 +138,6 @@ class DataStorage
         } indexTable;
 
         T* dataTable;
-        StringPoolList stringPoolList;
 };
 
 extern DataStorage<SpellEntry> sSpellStore;
